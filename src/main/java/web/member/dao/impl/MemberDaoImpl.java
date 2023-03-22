@@ -9,9 +9,11 @@ import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 
+import org.springframework.stereotype.Repository;
 import web.member.dao.MemberDao;
 import web.member.entity.Member;
 
+@Repository
 public class MemberDaoImpl implements MemberDao {
 
 	@Override

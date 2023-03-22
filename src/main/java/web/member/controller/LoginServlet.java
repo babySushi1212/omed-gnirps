@@ -2,8 +2,10 @@ package web.member.controller;
 
 import static core.util.CommonUtil.json2Pojo;
 import static core.util.CommonUtil.writePojo2Json;
-import static web.member.util.MemberConstants.SERVICE;
 
+import core.util.CommonUtil;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -11,11 +13,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import web.member.entity.Member;
+import web.member.service.MemberService;
 
 @WebServlet("/member/login")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+
+	private MemberService service;
+
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		service = CommonUtil.getBean(getServletContext(), MemberService.class);
+	}
+
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) {
 		Member member = json2Pojo(request, Member.class);
@@ -27,7 +37,7 @@ public class LoginServlet extends HttpServlet {
 			return;
 		}
 		
-		member = SERVICE.login(member);
+		member = service.login(member);
 		if (member.isSuccessful()) {
 			if (request.getSession(false) != null) {
 				request.changeSessionId();
