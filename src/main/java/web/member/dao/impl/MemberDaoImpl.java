@@ -2,6 +2,7 @@ package web.member.dao.impl;
 
 import java.util.List;
 
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -15,16 +16,18 @@ import web.member.entity.Member;
 
 @Repository("memberDaoImpl")  //類別名，撞名時使用。
 public class MemberDaoImpl implements MemberDao {
-
+	
+	@PersistenceContext
+	private Session session;
+	
 	@Override
 	public int insert(Member member) {
-		getSession().persist(member);
+		session.persist(member);
 		return 1;
 	}
 
 	@Override
 	public int deleteById(Integer id) {
-		Session session = getSession();
 		Member member = new Member();
 		member.setId(id);
 		session.remove(member);
@@ -45,7 +48,7 @@ public class MemberDaoImpl implements MemberDao {
 			.append("updater = :updater,")
 			.append("lastUpdatedDate = NOW() ")
 			.append("WHERE username = :username");
-		Query query = getSession().createQuery(hql.toString());
+		Query query = session.createQuery(hql.toString());
 		if (password != null && !password.isEmpty()) {
 			query.setParameter("password", member.getPassword());
 		}
@@ -59,20 +62,19 @@ public class MemberDaoImpl implements MemberDao {
 
 	@Override
 	public Member selectById(Integer id) {
-		return getSession().get(Member.class, id);
+		return session.get(Member.class, id);
 	}
 
 	@Override
 	public List<Member> selectAll() {
 		final String hql = "FROM Member ORDER BY id";
-		return getSession()
+		return session
 				.createQuery(hql, Member.class)
 				.getResultList();
 	}
 
 	@Override
 	public Member selectByUsername(String username) {
-		Session session = getSession();
 		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
 		CriteriaQuery<Member> criteriaQuery = criteriaBuilder.createQuery(Member.class);
 		Root<Member> root = criteriaQuery.from(Member.class);
@@ -84,7 +86,7 @@ public class MemberDaoImpl implements MemberDao {
 	public Member selectForLogin(String username, String password) {
 		final String sql = "select * from MEMBER "
 				+ "where USERNAME = :username and PASSWORD = :password";
-		return getSession().createNativeQuery(sql, Member.class)
+		return session.createNativeQuery(sql, Member.class)
 				.setParameter("username", username)
 				.setParameter("password", password)
 				.uniqueResult();

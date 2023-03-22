@@ -15,6 +15,10 @@ public class MemberServiceImpl implements MemberService {
 	@Autowired
 	private MemberDao dao;
 
+//	public MemberServiceImpl() {
+//		dao = new MemberDaoImpl();
+//	}
+
 	@Override
 	public Member register(Member member) {
 		if (member.getUsername() == null) {

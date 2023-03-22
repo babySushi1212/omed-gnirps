@@ -7,6 +7,9 @@
 		<welcome-file>/WEB-INF/index.html</welcome-file>
 	</welcome-file-list>
 
+	<request-character-encoding>UTF-8</request-character-encoding>
+	<response-character-encoding>UTF-8</response-character-encoding>
+
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
@@ -19,6 +22,13 @@
 		<param-value>core.config.AppConfig</param-value>
 	</context-param>
 	
-	<request-character-encoding>UTF-8</request-character-encoding>
-	<response-character-encoding>UTF-8</response-character-encoding>
+	<filter>
+		<filter-name>HibernateFilter</filter-name>
+		<filter-class>org.springframework.orm.hibernate5.support.OpenSessionInViewFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>HibernateFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
 </web-app>

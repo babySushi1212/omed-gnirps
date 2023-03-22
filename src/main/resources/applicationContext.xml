@@ -2,8 +2,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-
-	<!-- we now use @Service -->
-	<!-- <bean id="memberDao" class="web.member.dao.impl.MemberDaoImpl" /> -->
+		
+<!-- 	MemberDao memberdao = new MemberDao(); -->
+	<bean id="memberDao" class="web.member.dao.impl.MemberDaoImpl" />
 
 </beans>
